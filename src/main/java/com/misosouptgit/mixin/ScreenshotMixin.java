@@ -59,12 +59,16 @@ public class ScreenshotMixin {
 
     @Unique
     private static void sendNotification(Consumer<Text> chatReceiver) {
-        MinecraftClient client = MinecraftClient.getInstance();
-        Text title = Text.translatable("text.screenshottoclipboard.success");
-        Text content = Text.literal("Copied to Clipboard!");
+        final MinecraftClient client = MinecraftClient.getInstance();
+
+        final Text title = createText("text.screenshottoclipboard.success", true);
+        final Text content = createText("Copied to Clipboard!", false);
 
         client.execute(() -> {
-            if ("CHAT".equalsIgnoreCase(String.valueOf(CONFIG.notificationType))) {
+            // Configの通知タイプを確認
+            String type = String.valueOf(CONFIG.notificationType);
+
+            if ("CHAT".equalsIgnoreCase(type)) {
                 chatReceiver.accept(title);
             } else {
                 client.getToastManager().add(
@@ -72,6 +76,23 @@ public class ScreenshotMixin {
                 );
             }
         });
+    }
+
+    @Unique
+    private static Text createText(String value, boolean isTranslatable) {
+        try {
+            if (isTranslatable) {
+                return (Text) Text.class.getMethod("method_43471", String.class).invoke(null, value);
+            } else {
+                return (Text) Text.class.getMethod("method_43470", String.class).invoke(null, value);
+            }
+        } catch (Exception e) {
+            if (isTranslatable) {
+                return (Text) new net.minecraft.text.TranslatableText(value);
+            } else {
+                return (Text) new net.minecraft.text.LiteralText(value);
+            }
+        }
     }
 
     @Unique
