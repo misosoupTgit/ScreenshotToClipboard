@@ -1,4 +1,4 @@
 {
   "text.screenshottoclipboard.success": "§bスクリーンショットをクリップボードにコピーしました。",
-  "text.screenshottoclipboard.fail": "§4クリップボードへのコピーに失敗しました。"
+  "text.screenshottoclipboard.copied_message": "スクリーンショットをクリップボードにコピーしました。"
 }

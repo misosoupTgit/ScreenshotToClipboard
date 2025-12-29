@@ -3,13 +3,12 @@
 	"id": "screenshottoclipboard",
 	"version": "${version}",
 	"name": "ScreenshotToClipboard",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": ":)",
 	"authors": [
-		"Me!"
+		"zibasan / MisoPy"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"sources": "https://github.com/misosoupTgit/ScreenshotToClipboard"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/screenshottoclipboard/icon.png",
