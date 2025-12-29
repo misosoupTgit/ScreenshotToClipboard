@@ -1,0 +1,34 @@
+{
+	"schemaVersion": 1,
+	"id": "screenshottoclipboard",
+	"version": "${version}",
+	"name": "ScreenshotToClipboard",
+	"description": "This is an example description! Tell everyone what your mod is about!",
+	"authors": [
+		"Me!"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/screenshottoclipboard/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"client": [
+			"com.misosouptgit.ScreenshotToClipboard"
+		]
+	},
+	"mixins": [
+		{
+			"config": "screenshottoclipboard.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.18.1",
+		"minecraft": "~1.21.8",
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}
