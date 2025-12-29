@@ -23,30 +23,32 @@ import java.util.function.Consumer;
 public class ScreenshotMixin {
     @Unique private static final ModConfig CONFIG = ModConfig.load();
     @Unique private static final AtomicBoolean IS_PROCESSING = new AtomicBoolean(false);
-
-    // OS判定に基づいたハンドラの選択
     @Unique private static final ClipboardHandler HANDLER = createHandler();
 
     @Unique
     private static ClipboardHandler createHandler() {
         String os = System.getProperty("os.name").toLowerCase();
         if (os.contains("win")) return new WindowsClipboardHandler();
-        return new UnixClipboardHandler(); // MacとLinuxを共通で扱う
+        return new UnixClipboardHandler();
     }
 
     @Inject(method = "saveScreenshot", at = @At("RETURN"))
-    private static void onSaveScreenshot(File gameDirectory, @SuppressWarnings("unused") Framebuffer framebuffer, Consumer<Text> messageReceiver, CallbackInfo ci) {
+    private static void onSaveScreenshot(File gameDir, @SuppressWarnings("unused") Framebuffer fb, Consumer<Text> messageReceiver, CallbackInfo ci) {
         if (IS_PROCESSING.getAndSet(true)) return;
 
-        final File screenshotsDir = new File(gameDirectory, "screenshots");
+        final File screenshotsDir = new File(gameDir, "screenshots");
         new Thread(() -> {
             try {
-                Thread.sleep(800); // 保存完了待ち
+                Thread.sleep(800);
                 File latest = getLatestFile(screenshotsDir);
                 if (latest != null && latest.exists()) {
                     BufferedImage img = ImageIO.read(latest);
+                    // ハンドラ経由でコピー。画像とファイル両方を渡すことで全OSに対応
                     if (img != null && HANDLER.copyToClipboard(img, latest)) {
-                        if (CONFIG.showMessage) sendNotification(messageReceiver);
+                        // Configの showMessage が true の時だけ通知
+                        if (CONFIG.showMessage) {
+                            sendNotification(messageReceiver);
+                        }
                     }
                 }
             } catch (Exception e) {
@@ -58,22 +60,29 @@ public class ScreenshotMixin {
     }
 
     @Unique
+    private static void sendNotification(Consumer<Text> chatReceiver) {
+        MinecraftClient client = MinecraftClient.getInstance();
+        Text title = Text.translatable("text.screenshottoclipboard.success");
+        Text content = Text.literal("Copied to Clipboard!");
+
+        client.execute(() -> {
+            // notificationType が "CHAT" ならチャットへ、それ以外ならトーストへ
+            if ("CHAT".equalsIgnoreCase(String.valueOf(CONFIG.notificationType))) {
+                chatReceiver.accept(title);
+            } else {
+                client.getToastManager().add(
+                        new SystemToast(SystemToast.Type.WORLD_BACKUP, title, content)
+                );
+            }
+        });
+    }
+
+    @Unique
     private static File getLatestFile(File dir) {
         File[] fs = dir.listFiles((d, n) -> n.toLowerCase().endsWith(".png"));
         if (fs == null || fs.length == 0) return null;
         File l = fs[0];
         for (File f : fs) if (f.lastModified() > l.lastModified()) l = f;
         return l;
-    }
-
-    @Unique
-    private static void sendNotification(Consumer<Text> chatReceiver) {
-        MinecraftClient.getInstance().execute(() ->
-                MinecraftClient.getInstance().getToastManager().add(
-                        new SystemToast(SystemToast.Type.WORLD_BACKUP,
-                                Text.translatable("text.screenshottoclipboard.copied_message"),
-                                Text.literal("Success!"))
-                )
-        );
     }
 }
