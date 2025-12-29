@@ -13,14 +13,21 @@ public class ModConfig {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("screenshottoclipboard.json");
 
-    public final String commentShowMessage = "Boolean (true/false): Whether to display a notification after copying.";
-    public boolean showMessage = true;
+    // Singleton instance for real-time access across the mod
+    private static ModConfig instance;
 
-    public final String commentNotificationType = "String (CHAT/TOAST): The style of the success notification.";
+    public boolean showMessage = true;
     public NotificationType notificationType = NotificationType.CHAT;
 
     public enum NotificationType {
         CHAT, TOAST
+    }
+
+    public static ModConfig getInstance() {
+        if (instance == null) {
+            instance = load();
+        }
+        return instance;
     }
 
     public static ModConfig load() {
