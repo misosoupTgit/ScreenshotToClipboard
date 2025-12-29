@@ -23,7 +23,6 @@ public class ScreenshotToClipboard implements ClientModInitializer {
 		}
 	}
 
-	// 内部レコードクラス（Transferableの実装）
 	private record TransferableImage(Image image) implements Transferable {
 		@Override
 		public DataFlavor[] getTransferDataFlavors() {

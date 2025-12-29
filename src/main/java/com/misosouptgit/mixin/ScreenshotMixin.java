@@ -43,9 +43,7 @@ public class ScreenshotMixin {
                 File latest = getLatestFile(screenshotsDir);
                 if (latest != null && latest.exists()) {
                     BufferedImage img = ImageIO.read(latest);
-                    // ハンドラ経由でコピー。画像とファイル両方を渡すことで全OSに対応
                     if (img != null && HANDLER.copyToClipboard(img, latest)) {
-                        // Configの showMessage が true の時だけ通知
                         if (CONFIG.showMessage) {
                             sendNotification(messageReceiver);
                         }
@@ -66,7 +64,6 @@ public class ScreenshotMixin {
         Text content = Text.literal("Copied to Clipboard!");
 
         client.execute(() -> {
-            // notificationType が "CHAT" ならチャットへ、それ以外ならトーストへ
             if ("CHAT".equalsIgnoreCase(String.valueOf(CONFIG.notificationType))) {
                 chatReceiver.accept(title);
             } else {

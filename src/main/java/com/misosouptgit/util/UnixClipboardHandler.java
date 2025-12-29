@@ -10,10 +10,8 @@ public class UnixClipboardHandler implements ClipboardHandler {
 
         try {
             if (os.contains("mac")) {
-                // Mac: 標準の pbcopy を使用。FileTypeを指定して画像として流し込む
                 return runCommand(file, "osascript", "-e", "set the clipboard to (read (POSIX file \"" + file.getAbsolutePath() + "\") as «class PNGf»)");
             } else {
-                // Linux: Wayland(wl-copy) か X11(xclip) を環境に応じて使い分ける
                 boolean isWayland = System.getenv("WAYLAND_DISPLAY") != null;
                 if (isWayland && canRun("wl-copy")) {
                     return runCommand(file, "wl-copy", "--type", "image/png");
