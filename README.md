@@ -1,12 +1,18 @@
+> [!NOTE]
+> 🌍️ There is an English README.
+> Click [**HERE**](README.EN.md) to jump it.
+
+***
+
 # ScreenshotToClipboard
 
 このModは、**あなたのスクリーンショットをクリップボードへコピー**してすぐに共有できるFabric用Modです。
 
 ## 動作環境
 
-> - Minecraft Java Edition 1.20.5 - 1.21.11
+> - Minecraft Java Edition 1.18.2 - 1.21.8
 > - Modローダー：Fabric
-> - Fabric API：必須
+> - Fabric API：**必須**
 
 ## 導入方法
 
