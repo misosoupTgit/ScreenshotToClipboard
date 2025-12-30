@@ -10,7 +10,7 @@ This mod is *for Fabric* and *allows* you to **copy your screenshots to the clip
 
 ## Operating Environment
 
-> - Minecraft Java Edition 1.18.2 - 1.21.8
+> - Minecraft Java Edition 1.18.2 - 1.21.11
 > - Mod Loader: Fabric
 > - Fabric API: **REQUIRED**
 

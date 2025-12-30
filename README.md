@@ -10,7 +10,7 @@
 
 ## 動作環境
 
-> - Minecraft Java Edition 1.18.2 - 1.21.8
+> - Minecraft Java Edition 1.18.2 - 1.21.11
 > - Modローダー：Fabric
 > - Fabric API：**必須**
 
